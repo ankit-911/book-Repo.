@@ -12,7 +12,27 @@ public class Book {
     private Double price;
     private Integer yearPublished;
 
+    private Boolean isDeleted;
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setYearPublished(Integer yearPublished) {
+        this.yearPublished = yearPublished;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public int getYearPublished() {
         return yearPublished;

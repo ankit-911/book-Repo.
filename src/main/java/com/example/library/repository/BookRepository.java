@@ -8,32 +8,31 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
-    @Query("select b from Book b where (:title IS NULL OR b.title like %:title%) " +
-            "AND  (:author IS NULL OR b.author like %:author%)" +
-            "AND (:minYear IS NULL OR b.yearPublished >= :minYear)" +
-            "AND (:maxYear IS NULL OR b.yearPublished <= :maxYear)" +
-            "AND (:minPrice IS NULL OR b.price >= :minPrice)" +
-            "AND (:minPrice IS NULL OR b.price <= :minPrice)" +
-            "ORDER BY " +
-            "CASE when :sortBy = 'price' then b.price END * :sortOrder NULLS LAST, " +
-            "CASE when :sortBy = 'yearPublished' then b.yearPublished END * :sortOrder ASC NULLS FIRST"
-    )
 
-    Page<Book> searchBooks(String title, String author, Double minPrice,
-                           Double maxPrice, Integer minYear, Integer maxYear,
-                           String sortBy, String sortOrder,
-                           Pageable pageable);
+    List<Book> findByIsDeleted(Boolean isDeleted);
 
+    Book findByIdAndIsDeleted(Integer id, Boolean isDeleted);
 
+//    List<Book> findAllById(Iterable<Integer> integers);
 
-
-
-
-
-
-
+    //    @Query("select b from Book b where (:title IS NULL OR b.title like %:title%) " +
+//            "AND  (:author IS NULL OR b.author like %:author%)" +
+//            "AND (:minYear IS NULL OR b.yearPublished >= :minYear)" +
+//            "AND (:maxYear IS NULL OR b.yearPublished <= :maxYear)" +
+//            "AND (:minPrice IS NULL OR b.price >= :minPrice)" +
+//            "AND (:minPrice IS NULL OR b.price <= :minPrice)" +
+//            "ORDER BY " +
+//            "CASE when :sortBy = 'price' then b.price END * :sortOrder NULLS LAST, " +
+//            "CASE when :sortBy = 'yearPublished' then b.yearPublished END * :sortOrder ASC NULLS FIRST"
+//    )
+//    Page<Book> searchBooks(String title, String author, Double minPrice,
+//                           Double maxPrice, Integer minYear, Integer maxYear,
+//                           Pageable pageable);
 
 
 //    @Query("select b from Book b where b.author =: author ORDER BY b.price")

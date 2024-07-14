@@ -6,12 +6,7 @@ import com.example.library.entity.Book;
 import com.example.library.exception.BookNotFoundException;
 import com.example.library.exception.BookNotSaveException;
 import com.example.library.service.BookService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,27 +42,47 @@ public class BookController {
         return bookService.updateBook(id, bookRequestDto);
     }
 
-    @GetMapping("/getAllBooks")
-    public Page<Book> getAllBooks_Pegination(@RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "10") int size,
-                                             @RequestParam(defaultValue = "price") String sortBy,
-                                             @RequestParam(defaultValue = "asc") String sortOrder,
-                                             @RequestParam(required = false) String title,
-                                             @RequestParam(required = false) String author,
-                                             @RequestParam(required = false) Double minPrice,
-                                             @RequestParam(required = false) Double maxPrice,
-                                             @RequestParam(required = false) Integer minYear,
-                                             @RequestParam(required = false) Integer maxYear)
 
 
-    {
 
-        Sort.Direction sortDirection  =  sortOrder.equalsIgnoreCase("desc")? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
 
-        return bookService.getAllBooks_Pegination(title, author, minPrice,maxPrice, minYear, maxYear, sortBy, sortDirection.name(), pageable);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    @GetMapping("/getAllBooks")
+//    public Page<Book> getAllBooks_Pegination(@RequestParam(defaultValue = "0") int page,
+//                                             @RequestParam(defaultValue = "10") int size,
+//                                             @RequestParam(defaultValue = "price") String sortBy,
+////                                             @RequestParam(defaultValue = "asc") String sortOrder,
+//                                             @RequestParam(required = false) String title,
+//                                             @RequestParam(required = false) String author,
+//                                             @RequestParam(required = false) Double minPrice,
+//                                             @RequestParam(required = false) Double maxPrice,
+//                                             @RequestParam(required = false) Integer minYear,
+//                                             @RequestParam(required = false) Integer maxYear)
+//
+//    {
+//
+////        Sort.Direction sortDirection  =  sortOrder.equalsIgnoreCase("desc")? Sort.Direction.DESC : Sort.Direction.ASC;
+////
+////        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
+//
+//
+//
+//        return bookService.getAllBooks_Pegination(title, author, minPrice,maxPrice, minYear, maxYear, sortBy, page, size);
+//    }
 
 
 //

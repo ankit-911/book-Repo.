@@ -11,7 +11,9 @@ import com.example.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAllBooks() {
-        List<Book> bookList = bookRepository.findAll();
+        List<Book> bookList = bookRepository.findByIsDeleted(false);
         return bookList.stream().collect(Collectors.toList());
     }
 
@@ -47,7 +49,10 @@ public class BookServiceImpl implements BookService {
     public String deleteBook(Integer id) throws BookNotFoundException {
         String message = "Delete Book Successfully";
         try {
-            bookRepository.deleteById(id);
+            Book book = bookRepository.findById(id).orElseThrow();
+            book.setDeleted(true);
+            bookRepository.save(book);
+
         } catch (Exception exception) {
             throw new BookNotFoundException("Book Not found !!" + id);
         }
@@ -57,19 +62,23 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponseDto fetchBookByID(Integer id) throws BookNotFoundException {
         BookResponseDto bookResponseDto = new BookResponseDto();
-        Optional<Book> book = Optional.ofNullable(bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found")));
 
-        if (book.isPresent()) {
-            bookResponseDto.setId(book.get().getId());
-            bookResponseDto.setTitle(book.get().getTitle());
-            bookResponseDto.setPrice(book.get().getPrice());
-            bookResponseDto.setAuthor(book.get().getAuthor());
-            bookResponseDto.setYearPublished(book.get().getYearPublished());
-        } else {
-            throw new BookNotFoundException("book not found with this : " + id);
+
+        Book book = bookRepository.findByIdAndIsDeleted(id, false);
+
+        if (book == null)
+        {
+            throw new BookNotFoundException("book not found "  +id);
+        }
+        else {
+            bookResponseDto.setId(book.getId());
+            bookResponseDto.setTitle(book.getTitle());
+            bookResponseDto.setPrice(book.getPrice());
+            bookResponseDto.setAuthor(book.getAuthor());
+            bookResponseDto.setYearPublished(book.getYearPublished());
+
         }
         return bookResponseDto;
-
     }
 
     @Override
@@ -97,38 +106,18 @@ public class BookServiceImpl implements BookService {
         return book;
     }
 
-    @Override
-    public Page<Book> getAllBooks_Pegination(String title, String author, Double minPrice, Double maxPrice,
-                                             Integer minYear, Integer maxYear,String sortBy, String sortOrder, Pageable pageable) {
-
-
-        return bookRepository.searchBooks(title, author, minPrice,maxPrice, minYear, maxYear, sortBy, sortOrder, pageable);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//    @Override
+//    public Page<Book> getAllBooks_Pegination(String title, String author, Double minPrice, Double maxPrice,
+//                                             Integer minYear, Integer maxYear, String sortBy, int page, int size) {
+//
+//        Sort sort = Sort.by(sortBy.equalsIgnoreCase("price") ? "price" : "yearPublished");
+//
+//
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//
+//        return bookRepository.searchBooks(title, author, minPrice,maxPrice, minYear, maxYear, pageable);
+//    }
+//
 
 
 //    @Override

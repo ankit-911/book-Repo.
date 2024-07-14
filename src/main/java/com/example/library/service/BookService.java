@@ -23,9 +23,8 @@ public interface BookService {
 
     Book updateBook(Integer id, BookRequestDto bookRequestDto);
 
-    Page<Book> getAllBooks_Pegination(String title,String author, Double minPrice, Double maxPrice, Integer minYear, Integer maxYear,
-                                      String sortBy, String sortOrder,
-                                      Pageable pageable);
+//    Page<Book> getAllBooks_Pegination(String title,String author, Double minPrice, Double maxPrice, Integer minYear, Integer maxYear,
+//                                      String sortBy, int page, int size);
 
 //    List<Book> fetchBookByName(String author);
 //
